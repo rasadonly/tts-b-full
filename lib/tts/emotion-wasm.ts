@@ -11,10 +11,14 @@ let sessionPromise: Promise<Session> | undefined;
 let ortPromise: Promise<typeof import('onnxruntime-web')> | undefined;
 
 function getOrt(): Promise<typeof import('onnxruntime-web')> {
-  ortPromise ??= import('onnxruntime-web').then((mod) => {
+  ortPromise ??= (async () => {
+    if (process.env.EMOTION_BACKEND === 'node') {
+      return (await import('onnxruntime-node')) as unknown as typeof import('onnxruntime-web');
+    }
+    const mod = await import('onnxruntime-web');
     mod.env.wasm.numThreads = 1;
     return mod;
-  });
+  })();
   return ortPromise;
 }
 
@@ -29,8 +33,12 @@ async function getSession(): Promise<Session> {
       'model_quantized.onnx'
     );
     const bytes = readFileSync(modelPath);
+    const providers =
+      process.env.EMOTION_BACKEND === 'node'
+        ? ['cpu']
+        : ['wasm'];
     sessionPromise = ort.InferenceSession.create(bytes, {
-      executionProviders: ['wasm'],
+      executionProviders: providers,
       graphOptimizationLevel: 'all',
     }) as Promise<Session>;
   }

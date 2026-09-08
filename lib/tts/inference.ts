@@ -41,6 +41,8 @@ async function getSession(): Promise<OrtSessionLike> {
   modelSession = await ort.InferenceSession.create(createSource(), {
     executionProviders: process.env.ORT_BACKEND === 'wasm' ? ['wasm'] : ['cpu'],
     graphOptimizationLevel: 'all',
+    enableCpuMemArena: false,
+    enableMemPattern: false,
   });
   return modelSession;
 }

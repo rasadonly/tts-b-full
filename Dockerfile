@@ -4,7 +4,6 @@
 
 FROM node:20-slim AS build
 WORKDIR /app
-ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY app ./app
