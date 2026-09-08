@@ -1,0 +1,37 @@
+{
+  "name": "tts-generator",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/ensure-model.mjs && node scripts/ensure-emotion-model.mjs",
+    "build": "next build",
+    "vercel-build": "node scripts/ensure-model.mjs && node scripts/ensure-emotion-model.mjs && next build",
+    "start": "next start",
+    "serve:standalone": "tsx server.mts",
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "lint": "next lint",
+    "test": "tsx --test lib/tts/*.test.ts",
+    "download-model": "node scripts/download-model.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "next": "^14.0.0",
+    "onnxruntime-node": "1.29.0",
+    "onnxruntime-web": "^1.20.1",
+    "phonemizer": "^1.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.13",
+    "typescript": "^5.0.0"
+  },
+  "overrides": {
+    "onnxruntime-node": "1.29.0"
+  }
+}
