@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { generateSpeech } from '../../lib/tts';
+import { generateSpeech } from '@/lib/tts';
 
 export async function POST(request: Request) {
   try {
